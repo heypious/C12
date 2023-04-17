@@ -3,10 +3,9 @@
 # while loop input rollno, name, marks (for each subject)
 # exit loop and add info to file when pressed ctrl + z
 from os import system as terminal
+from prettytable import from_csv as csv
 
-print("Student Report Card")
-
-file = 'studentdb.txt'
+file = 'studentdb.csv'
 
 def write(data):
     db = open(file, "a")
@@ -16,7 +15,8 @@ def write(data):
 def roll_is_there(data):
     db = open(file, "r")
     for x in db.readlines():
-        if x[0:2] == data:
+        record = x.split(",")
+        if record[0] == data:
             return True
         else:
             return False
@@ -39,10 +39,9 @@ def add():
 
 def read():
     terminal('cls')
-    db = open(file, "r")
-    for x in db.readlines():
-        print(x)
-    db.close()
+    with open(file, "r") as db:
+        mytable = csv(db)
+        print(mytable)
 
 def clear():
     db = open(file, "w")
@@ -65,8 +64,7 @@ def menu():
         else:
             quit()
             
-
 from pathlib import Path
-if Path('studentdb.txt').is_file():
+if Path('studentdb.csv').is_file():
     menu()
-
+    
